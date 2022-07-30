@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react';
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import withNavigation from './WithNavigation.jsx'
@@ -9,9 +10,10 @@ class TodoApp extends Component {
             <div className="TodoApp">
                 <Router>
                     <Routes>
-                        <Route path="/" element={<LoginComponentWithNavigation/>}/>
-                        <Route path="/login" element={<LoginComponentWithNavigation/>}/>
-                        <Route path="/welcome" element={<WelcomeComponent/>}/> 
+                        <Route path="/" element={<LoginComponentWithNavigation/>} />
+                        <Route path="/login" element={<LoginComponentWithNavigation/>} />
+                        <Route path="/welcome" element={<WelcomeComponent/>} /> 
+                        <Route path="*" element={<ErrorComponent/>} />
                     </Routes>
                 </Router>
             </div>
@@ -23,6 +25,10 @@ class WelcomeComponent extends Component {
     render() {
         return <div>Welcome!</div>
     }
+}
+
+function ErrorComponent() {
+        return <div>Erorr!</div>
 }
 
 class LoginComponent extends Component {
