@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import withNavigation from './WithNavigation.jsx'
 import withParams from './WithParams.jsx';
+//import './App.css'
+import '/Users/qumengdie/Downloads/Projects/Todo/todo-app/src/bootstrap.css'
 
 class TodoApp extends Component {
     render() {
@@ -11,6 +13,7 @@ class TodoApp extends Component {
         return (
             <div className="TodoApp">
                 <Router>
+                    <HeaderComponent/>
                     <Routes>
                         <Route path="/" element={<LoginComponentWithNavigation/>} />
                         <Route path="/login" element={<LoginComponentWithNavigation/>} />
@@ -18,7 +21,28 @@ class TodoApp extends Component {
                         <Route path="/todos" element={<ListTodosComponent/>} /> 
                         <Route path="*" element={<ErrorComponent/>} />
                     </Routes>
+                    <FooterComponent/>
                 </Router>
+            </div>
+        )
+    }
+}
+
+class HeaderComponent extends Component {
+    render() {
+        return (
+            <div>
+                Header <hr/>
+            </div>
+        )
+    }
+}
+
+class FooterComponent extends Component {
+    render() {
+        return (
+            <div>
+                <hr/>Footer
             </div>
         )
     }
@@ -30,9 +54,9 @@ class ListTodosComponent extends Component {
         this.state = {
             todos : 
             [
-                {id: 1, description: 'Cook'},
-                {id: 2, description: 'Eat'},
-                {id: 3, description: 'Swim'}
+                {id: 1, description: 'Cook', done: false, targetDate: new Date()},
+                {id: 2, description: 'Eat', done: false, targetDate: new Date()},
+                {id: 3, description: 'Swim', done: false, targetDate: new Date()}
             ]
         }
     }
@@ -46,6 +70,8 @@ class ListTodosComponent extends Component {
                         <tr>
                             <th>id</th>
                             <th>description</th>
+                            <th>done?</th>
+                            <th>target date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,6 +81,8 @@ class ListTodosComponent extends Component {
                                 <tr>
                                     <td>{todo.id}</td>
                                     <td>{todo.description}</td>
+                                    <td>{todo.done.toString()}</td>
+                                    <td>{todo.targetDate.toString()}</td>
                                 </tr>)
                         }
                     </tbody>
@@ -66,7 +94,9 @@ class ListTodosComponent extends Component {
 
 class WelcomeComponent extends Component {
     render() {
-        return <div>Welcome {this.props.params.name}!</div>
+        return <div>
+                Welcome {this.props.params.name}! You can manage your todos <Link to="/todos">here</Link>.
+            </div>
     }
 }
 
@@ -111,8 +141,6 @@ class LoginComponent extends Component {
     render() {
         return (
             <div>
-                {/*<ShowInvalidMessage hasLoginFailed={this.state.hasLoginFailed}/>
-                <ShowLoginSuccessMessage showSuccessMessage={this.state.showSuccessMessage}/>*/}
                 {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
                 {this.state.showSuccessMessage && <div>Login Succeeded</div>}
                 User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
@@ -122,20 +150,5 @@ class LoginComponent extends Component {
         )
     }
 }
-
-
-// function ShowInvalidMessage(props) {
-//         if (props.hasLoginFailed) {
-//             return <div>Invalid Credentials</div>
-//         }
-//         return null;
-// }
-
-// function ShowLoginSuccessMessage(props) {
-//     if (props.showSuccessMessage) {
-//         return <div>Login Succeeded</div>
-//     }
-//     return null;
-// }
 
 export default TodoApp;
