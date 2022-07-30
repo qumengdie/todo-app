@@ -1,13 +1,27 @@
 import React, {Component} from 'react';
-
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import withNavigation from './WithNavigation.jsx'
 
 class TodoApp extends Component {
     render() {
+        const LoginComponentWithNavigation = withNavigation(LoginComponent);
         return (
             <div className="TodoApp">
-                <LoginComponent/>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<LoginComponentWithNavigation/>}/>
+                        <Route path="/login" element={<LoginComponentWithNavigation/>}/>
+                        <Route path="/welcome" element={<WelcomeComponent/>}/> 
+                    </Routes>
+                </Router>
             </div>
         )
+    }
+}
+
+class WelcomeComponent extends Component {
+    render() {
+        return <div>Welcome!</div>
     }
 }
 
@@ -31,7 +45,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='qumengdie' && this.state.password==='great') {
-            console.log('successful')
+            this.props.navigate('/welcome')   
             this.setState({showSuccessMessage:true})
             this.setState({hasLoginFailed:false})
         }
