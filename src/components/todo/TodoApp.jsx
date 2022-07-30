@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import withNavigation from './WithNavigation.jsx'
 import withParams from './WithParams.jsx';
-//import './App.css'
 import '/Users/qumengdie/Downloads/Projects/Todo/todo-app/src/bootstrap.css'
 
 class TodoApp extends Component {
