@@ -2,17 +2,19 @@ import { render } from '@testing-library/react';
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import withNavigation from './WithNavigation.jsx'
+import withParams from './WithParams.jsx';
 
 class TodoApp extends Component {
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent);
+        const WelcomeComponentWithParams = withParams(WelcomeComponent);
         return (
             <div className="TodoApp">
                 <Router>
                     <Routes>
                         <Route path="/" element={<LoginComponentWithNavigation/>} />
                         <Route path="/login" element={<LoginComponentWithNavigation/>} />
-                        <Route path="/welcome" element={<WelcomeComponent/>} /> 
+                        <Route path="/welcome/:name" element={<WelcomeComponentWithParams/>} /> 
                         <Route path="*" element={<ErrorComponent/>} />
                     </Routes>
                 </Router>
@@ -23,7 +25,7 @@ class TodoApp extends Component {
 
 class WelcomeComponent extends Component {
     render() {
-        return <div>Welcome!</div>
+        return <div>Welcome {this.props.params.name}!</div>
     }
 }
 
@@ -51,7 +53,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='qumengdie' && this.state.password==='great') {
-            this.props.navigate('/welcome')   
+            this.props.navigate(`/welcome/${this.state.username}`)   
             this.setState({showSuccessMessage:true})
             this.setState({hasLoginFailed:false})
         }
