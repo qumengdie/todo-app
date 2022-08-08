@@ -5,6 +5,7 @@ import withNavigation from './WithNavigation.jsx'
 import withParams from './WithParams.jsx';
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthenticationService from './AuthenticationService.js';
+import AuthenticatedRoute from './AuthenticatedRoute.jsx';
 
 class TodoApp extends Component {
     render() {
@@ -18,9 +19,9 @@ class TodoApp extends Component {
                     <Routes>
                         <Route path="/" element={<LoginComponentWithNavigation/>} />
                         <Route path="/login" element={<LoginComponentWithNavigation/>} />
-                        <Route path="/welcome/:name" element={<WelcomeComponentWithParams/>} /> 
-                        <Route path="/todos" element={<ListTodosComponent/>} /> 
-                        <Route path="/logout" element={<LogoutComponent/>} /> 
+                        <Route path="/welcome/:name" element={<AuthenticatedRoute><WelcomeComponentWithParams/></AuthenticatedRoute>} /> 
+                        <Route path="/todos" element={<AuthenticatedRoute><ListTodosComponent/></AuthenticatedRoute>} /> 
+                        <Route path="/logout" element={<AuthenticatedRoute><LogoutComponent/></AuthenticatedRoute>} /> 
                         <Route path="*" element={<ErrorComponent/>} />
                     </Routes>
                     <FooterComponent/>
