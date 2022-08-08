@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import withNavigation from './WithNavigation.jsx'
 import withParams from './WithParams.jsx';
-import '/Users/qumengdie/Downloads/Projects/Todo/todo-app/src/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap.css';
+import AuthenticationService from './AuthenticationService.js';
 
 class TodoApp extends Component {
     render() {
@@ -154,6 +154,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='qumengdie' && this.state.password==='great') {
+            AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password)
             this.props.navigate(`/welcome/${this.state.username}`)   
             this.setState({showSuccessMessage:true})
             this.setState({hasLoginFailed:false})
