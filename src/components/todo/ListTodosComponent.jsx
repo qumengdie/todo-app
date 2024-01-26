@@ -9,6 +9,7 @@ class ListTodosComponent extends Component {
             todos : [],
             message : null
         }
+        this.updateTodoClicked = this.updateTodoClicked.bind(this)
         this.deleteTodoClicked = this.deleteTodoClicked.bind(this)
         this.refreshTodos = this.refreshTodos.bind(this)
     }
@@ -25,6 +26,10 @@ class ListTodosComponent extends Component {
                 this.setState({todos : response.data})
             }
         )
+    }
+
+    updateTodoClicked(id) {
+        this.props.navigate(`/todos/${id}`)
     }
 
     deleteTodoClicked(id) {
@@ -52,6 +57,7 @@ class ListTodosComponent extends Component {
                                 <th>description</th>
                                 <th>done?</th>
                                 <th>target date</th>
+                                <th>Update</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
@@ -64,6 +70,7 @@ class ListTodosComponent extends Component {
                                         <td>{todo.description}</td>
                                         <td>{todo.done.toString()}</td>
                                         <td>{todo.targetDate.toString()}</td>
+                                        <td><button className="btn btn-success" onClick={() => this.updateTodoClicked(todo.id)}>Update</button></td>
                                         <td><button className="btn btn-warning" onClick={() => this.deleteTodoClicked(todo.id)}>Delete</button></td>
                                     </tr>)
                             }
