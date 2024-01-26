@@ -6,17 +6,19 @@ class ListTodosComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            todos : 
-            [
-                // {id: 1, description: 'Cook', done: false, targetDate: new Date()},
-                // {id: 2, description: 'Eat', done: false, targetDate: new Date()},
-                // {id: 3, description: 'Swim', done: false, targetDate: new Date()}
-            ]
+            todos : [],
+            message : null
         }
+        this.deleteTodoClicked = this.deleteTodoClicked.bind(this)
+        this.refreshTodos = this.refreshTodos.bind(this)
     }
 
     componentDidMount() {
-        let username = AuthenticationService.getLoggedInUserName
+        this.refreshTodos();
+    }
+
+    refreshTodos() {
+        let username = AuthenticationService.getLoggedInUserName()
         TodoDataService.retrieveAllTodos(username)
         .then(
             response => {
@@ -25,10 +27,22 @@ class ListTodosComponent extends Component {
         )
     }
 
+    deleteTodoClicked(id) {
+        let username = AuthenticationService.getLoggedInUserName()
+        TodoDataService.deleteTodo(username, id)
+        .then (
+            response => {
+                this.setState({message : `Delete of todo ${id} successful`});
+                this.refreshTodos();
+            }
+        )
+    }
+
     render() {
         return (
             <div>
                 <h1>List Todos</h1>
+                {this.state.message && <div className="alert alert-success">{this.state.message}</div>}
                 <div className='container'>
 
                     <table className='table'>
@@ -38,6 +52,7 @@ class ListTodosComponent extends Component {
                                 <th>description</th>
                                 <th>done?</th>
                                 <th>target date</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,6 +64,7 @@ class ListTodosComponent extends Component {
                                         <td>{todo.description}</td>
                                         <td>{todo.done.toString()}</td>
                                         <td>{todo.targetDate.toString()}</td>
+                                        <td><button className="btn btn-warning" onClick={() => this.deleteTodoClicked(todo.id)}>Delete</button></td>
                                     </tr>)
                             }
                         </tbody>
