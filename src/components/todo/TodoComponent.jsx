@@ -27,12 +27,12 @@ class TodoComponent extends Component {
         TodoDataService.retrieveTodo(username, this.state.id)
             .then(response => this.setState({
                 description : response.data.description,
-                targetDate : moment(response.data.targetDate).format('YYYY-MM-DD')
+                targetDate : moment.utc(response.data.targetDate).format('YYYY-MM-DD')
             }))
     }
 
     onSubmit(values) {
-        console.log('saving a todo')
+        console.log(values)
         let username = AuthenticationService.getLoggedInUserName()
         let todo = {
             id : this.state.id,
