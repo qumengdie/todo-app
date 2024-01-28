@@ -19,6 +19,10 @@ class TodoComponent extends Component {
     }
 
     componentDidMount() {
+        if (this.state.id === -1) {
+            return
+        }
+
         let username = AuthenticationService.getLoggedInUserName()
         TodoDataService.retrieveTodo(username, this.state.id)
             .then(response => this.setState({
@@ -28,11 +32,23 @@ class TodoComponent extends Component {
     }
 
     onSubmit(values) {
+        console.log('saving a todo')
+        let username = AuthenticationService.getLoggedInUserName()
+        let todo = {
+            id : this.state.id,
+            description : values.description,
+            targetDate : values.targetDate
+        }
 
+        if (this.state.id === -1) {
+            TodoDataService.createTodo(username, todo).then(() => this.props.navigate('/todos'))
+        } else {
+            TodoDataService.updateTodo(username, this.state.id, todo).then(() => this.props.navigate('/todos'))
+        }
     }
 
     validate(values) {
-        let errors = {description:''}
+        let errors = {}
         if (!values.description) {
             errors.description = 'Enter a Description'
         }
